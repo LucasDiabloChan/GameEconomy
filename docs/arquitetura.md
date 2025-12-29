@@ -1,19 +1,19 @@
 # Visão Geral do Arquivo
 
-Este arquivo apresenta uma visão abrangente da arquitetura do projeto GameEconomy, cobrindo desde a abordagem frontend-first e tecnologias escolhidas até a organização de módulos, fluxos principais e decisões arquiteturais chave, com o objetivo de orientar desenvolvedores na implementação e manutenção do sistema.
+Este arquivo apresenta uma visão abrangente da arquitetura do projeto GameEconomy, cobrindo desde as decisões iniciais (como a abordagem frontend-first) até às escolhas de tecnologias e a organização dos módulos, fluxos principais e decisões arquiteturais chave, com foco em orientar seu desenvolvimento.
 
 # Sumário
 
 - [1. Visão Geral da Arquitetura](#1-visão-geral-da-arquitetura)
 - [2. Stack/Tecnologias Escolhidas](#2-stacktecnologias-escolhidas)
 - [3. Organização de Camadas/Módulos](#3-organização-de-camadasmódulos)
-  - [3.1 Camada de apresentação (UI)](#31-camada-de-apresentação-ui)
-  - [3.2 Camada de Domínio (lógica de negócio)](#32-camada-de-domínio-lógica-de-negócio)
-  - [3.3 Camada de Infraestrutura (suporte)](#33-camada-de-infraestrutura-suporte)
-- [4. Fluxos principais (descrever com Mermaid depois)](#4-fluxos-principais-descrever-com-mermaid-depois)
+  - [3.1 Camada de Apresentação (UI)](#31-camada-de-apresentação-ui)
+  - [3.2 Camada de Domínio (Lógica de Negócio)](#32-camada-de-domínio-lógica-de-negócio)
+  - [3.3 Camada de Infraestrutura (Suporte)](#33-camada-de-infraestrutura-suporte)
+- [4. Diagrama dos Fluxos Principais](#4-diagramas-dos-fluxos-principais)
   - [4.1 Fluxo de cálculo:](#41-fluxo-de-cálculo)
   - [4.2 Fluxo de histórico:](#42-fluxo-de-histórico)
-- [5. Decisões arquiteturais chave (resumo)](#5-decisões-arquiteturais-chave-resumo)
+- [5. Decisões Arquiteturais Chave](#5-decisões-arquiteturais-chave)
   - [Decisão 1: Uso de Astro em vez de SPA tradicional](#decisão-1-uso-de-astro-em-vez-de-spa-tradicional)
   - [Decisão 2: Uso de TypeScript](#decisão-2-uso-de-typescript)
   - [Decisão 3: PWA com @vite-pwa/astro](#decisão-3-pwa-com-vite-pwaastro)
@@ -52,11 +52,11 @@ Além disso, o documento serve como guia para a implementação, com ênfase em 
 
 # 3. Organização de Camadas/Módulos
 
-## 3.1 Camada de apresentação (UI)
+## 3.1 Camada de Apresentação (UI)
 
 Contém as páginas Astro (.astro) responsáveis por layout estático, meta tags, estrutura responsiva e os componentes React usados como “ilhas” para o formulário da calculadora e a listagem e ações do histórico de cálculos.
 
-## 3.2 Camada de Domínio (lógica de negócio)
+## 3.2 Camada de Domínio (Lógica de Negócio)
 
 ### Módulo de Cálculo
 
@@ -66,7 +66,7 @@ Possui funções puras para determinar combinações de pacotes que atinjam ou e
 
 Defime os tipos e interfaces TypeScript (Package, CalculationInput, CalculationResult, HistoryEntry e outros).
 
-## 3.3 Camada de Infraestrutura (suporte)
+## 3.3 Camada de Infraestrutura (Suporte)
 
 ### Módulo de Armazenamento
 
@@ -76,43 +76,94 @@ Dispõe de funções para ler e escrever histórico e pacotes no localStorage.
 
 Deve considerar a possível (e provável) adição de Funções para buscar pacotes de um endpoint remoto e a implementação de estratégias de fallback (usar dados locais se a API falhar).
 
-# 4. Fluxos Principais (descrever com Mermaid depois)
-Você pode futuramente complementar esta seção com diagramas Mermaid, por exemplo:
+# 4. Diagramas dos Fluxos Principais 
+Esse sistema possui, inicialmente, duas principais funcionalidades. Estas são o cálculo e combinação de pacotes para buscar a melhor alternativa e o histórico delas, o qual contém informações relevantes para o usuário, como quantidade de tokens, pacotes, valor total e data.
 
 ## 4.1 Fluxo de Cálculo
 
-Usuário informa quantidade desejada → componente React chama função de cálculo → lógica gera combinação → UI exibe resultado → resultado é salvo no histórico via módulo de storage.
+Nesse fluxo, elucidado no diagrama abaixo, o usuário informa quantidade desejada, através da interface gráfica, e o sistema irá calcular as alternativas possíveis. Após os cálculos, o sistema mostrará ao usuário todas as opções e evidenciará a melhor, com foco em trazer um maior retorno em tokens com preço mais acessível, se possível. Além disso, esses resultados serão armazenados no histórico.
 
-flowchart TD
-A[Usuário acessa PWA] --> B[Formulário de cálculo]
-B --> C[Usuário informa quantidade desejada de tokens]
-C --> D[Usuário seleciona método de pagamento]
-D --> E[Usuário clica em 'Calcular']
-E --> F[Camada de domínio: lógica de cálculo]
-F --> G[Determinar combinação de pacotes
-que atinja ou exceda a quantidade desejada]
-G --> H[Calcular métricas
-(total, custo médio, excedente)]
-H --> I[Exibir resultado na UI]
-I --> J[Salvar entrada no histórico local]
-J --> K[Exibir histórico atualizado]
+``` mermaid
+---
+title: BPMN - Fluxo de Cálculo 
+config:
+  look: handDrawn
+  theme: white
+---
+flowchart LR
+  A@{ shape: stadium, label: "Início" }
+  C@{ shape: lean-r, label: "Quantidade de Tokens
+                             e Meio de Pagamento" }
+  H@{ shape: stadium, label: "Término" }
+  A((Inicio)) --> B([Usuário Acessa 
+                      Calculadora])
+  B --> C
+  C --> D[Calcular 
+            Combinações]
+  D --> E[Calcular Preço
+            e Descontos]
+  E --> F[Salvar Resultados 
+            no Histórico]
+  F --> G[Exibir Resultados 
+            ao Usuário]
+  G --> H((Fim))
+```
 
 ## 4.2 Fluxo de Histórico
 
 Na inicialização do componente de histórico, ler lista de cálculos do storage → exibir ao usuário → permitir limpar → ao limpar, apagar entradas do storage.
 
-flowchart TD
-A[Inicialização da página] --> B[Carregar histórico do localStorage]
-B --> C{Histórico existe?}
-C -- Não --> D[Inicializar histórico vazio]
-C -- Sim --> E[Exibir lista de cálculos anteriores]
-E --> F[Usuário pode selecionar 'Limpar histórico']
-F --> G[Apagar dados do localStorage]
-G --> H[Atualizar UI para histórico vazio]
+``` mermaid
+---
+title: BPMN - Fluxo de Sincronismo do Histórico
+config:
+  look: handDrawn
+  theme: white
+---
+flowchart LR
+  A@{ shape: stadium, label: "Início" }
 
-# 5. Decisões arquiteturais chave (resumo)
+  B@{ shape: diamond, label: "Histórico Existe
+                              na Nuvem?" }
 
-Aqui você pode adicionar links para ADRs ou manter apenas um resumo:
+    C@{ shape: rect,    label: "Sincronizar com 
+                                Histórico da Nuvem" }
+      
+      D@{ shape: rect,    label: "Exibir Cálculos
+                                  do Histórico" }
+  
+    E@{ shape: diamond, label: "Histórico Existe
+                                Localmente?" }
+  
+      F@{ shape: rect,     label: "Recuperar 
+                                  Histórico Local" }
+
+      G@{ shape: rect,    label: "Inicializar 
+                                  Histórico Vazio" }
+
+  H@{ shape: stadium, label: "Fim" }
+
+  A --> B
+  
+  B -- Sim --> C
+  B -- No --> E
+  
+  C --> D
+
+  D --> H
+
+  E -- Sim --> F
+  E -- Não --> G
+
+  F --> D
+
+  G --> H
+
+```
+
+# 5. Decisões Arquiteturais Chave
+
+Nesta seção, estão as principais decisões acerca da arquitetura e método de desenvolvimento tomados durante o planejamento do projeto GameEconomy. A seguir, as decisões e suas respectivas motivações foram listadas em formato de subtópicos.
 
 ## Decisão 1: Uso de Astro em vez de SPA tradicional
 

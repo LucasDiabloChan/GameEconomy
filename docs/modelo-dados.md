@@ -23,7 +23,7 @@ Este documento descreve as principais entidades de dados utilizadas pelo sistema
 
 --- 
 
-## 1. Visão geral
+## 1. Visão Geral
 
 O sistema manipula principalmente três grupos de dados:
 
@@ -33,26 +33,25 @@ O sistema manipula principalmente três grupos de dados:
 
 Todos os modelos serão representados em TypeScript na camada de domínio.
 
-## 2. Pacotes de tokens
+## 2. Pacotes de Tokens
 
 ### 2.1 Entidade `Package`
 
 Representa um pacote de tokens oferecido por uma determinada plataforma/jogo.
 
-Campos sugeridos:
+Campos presentes:
 
 - `id: string`  
   Identificador único do pacote no contexto do app.
 
 - `name: string`  
-  Nome descritivo do pacote (ex.: `"Pacote 100 tokens"`).
+  Nome descritivo do pacote (exemplo: `"Pacote 100 tokens"`).
 
 - `platform: string`  
-  Plataforma ou jogo ao qual o pacote pertence (ex.: `"Jogo X"`, `"Loja Y"`).  
-  Na primeira versão, pode ser um valor fixo ou mesmo uma string vazia, se não houver diferenciação.
+  Plataforma ou jogo ao qual o pacote pertence (exemplo: `"Jogo X"`, `"Loja Y"`).
 
 - `currency: string`  
-  Código da moeda (ex.: `"BRL"`).
+  Código da moeda (exemplo: `"BRL"`).
 
 - `price: number`  
   Preço do pacote na moeda especificada.
@@ -63,9 +62,8 @@ Campos sugeridos:
 - `includesCardFees: boolean`  
   Indica se o preço já inclui tarifas de cartão/bandeira.
 
-- `availablePaymentMethods?: PaymentMethod[]`  
-  Lista de métodos de pagamento em que esse pacote está disponível (ex.: `[ "PIX", "CREDIT_CARD" ]`).  
-  Este campo pode ser opcional na versão inicial.
+- `availablePaymentMethods: PaymentMethod[]`  
+  Lista de métodos de pagamento em que esse pacote está disponível (exemplo: `[ "PIX", "CREDIT_CARD" ]`).
 
 ### 2.2 Tipo `PaymentMethod`
 
@@ -73,10 +71,10 @@ Enumerado simples para métodos de pagamento:
 
 - `PIX`  
 - `CREDIT_CARD`  
-- (Outros podem ser adicionados futuramente.)
+- (Outros podem ser adicionados futuramente)
 
 
-### 2.3 Exemplo de pacote em JSON
+### 2.3 Exemplo de Pacote em JSON
 
 ```json
 {
@@ -92,15 +90,15 @@ Enumerado simples para métodos de pagamento:
 ```
 
 
-## 3. Entradas de cálculo
+## 3. Entradas de Cálculo
 
 ### 3.1 Entidade `CalculationInput`
 
 Representa os dados de entrada necessários para realizar um cálculo de combinação de pacotes.
 
-Campos sugeridos:
+Campos presentes:
 
-- `requestedTokens: number`  
+- `requestedAmountTokens: number`  
   Quantidade de tokens desejada pelo usuário.
 
 - `paymentMethod: PaymentMethod`  
@@ -116,7 +114,7 @@ Campos sugeridos:
 
 ```json
 {
-  "requestedTokens": 400,
+  "requestedAmountTokens": 400,
   "paymentMethod": "CREDIT_CARD",
   "platform": "JogoX",
   "extraFeePercentage": 2.5
@@ -124,8 +122,7 @@ Campos sugeridos:
 ```
 
 
-
-## 4. Resultado de cálculo
+## 4. Resultado de Cálculo
 
 ### 4.1 Entidade `CalculationResult`
 
@@ -149,8 +146,8 @@ Representa a saída da lógica de cálculo para uma combinação de pacotes.
 - `paymentMethod: PaymentMethod`  
   Método de pagamento considerado no cálculo.
 
-- `platform?: string`  
-  Plataforma/jogo (se aplicável).
+- `platform: string`  
+  Plataforma/jogo.
 
 - `packages: SelectedPackage[]`  
   Lista de pacotes utilizados na combinação.
@@ -198,7 +195,7 @@ Representa um pacote específico dentro de uma combinação.
 ```
 
 
-## 5. Histórico de cálculos
+## 5. Histórico de Cálculos
 
 ### 5.1 Entidade `HistoryEntry`
 
@@ -216,7 +213,7 @@ Registra um cálculo já realizado, armazenado no dispositivo do usuário.
 - `createdAt: string`  
   Data e hora do cálculo em formato ISO (ex.: `"2025-12-23T15:30:00.000Z"`).
 
-### 5.2 Estrutura de armazenamento em `localStorage`
+### 5.2 Estrutura de Armazenamento em `localStorage`
 
 Sugestão de chave:
 
@@ -257,7 +254,7 @@ Exemplo:
 ```
 
 
-## 6. Possíveis extensões futuras
+## 6. Possíveis Extensões Futuras
 
 - **Perfil de usuário**:
   - Entidade `UserProfile` com preferências (plataformas favoritas, métodos de pagamento padrão, limites de gasto).
@@ -269,6 +266,3 @@ Exemplo:
   - Entidades para metas de economia, uso recorrente, badges, etc.
 
 Essas extensões não são necessárias na primeira versão, mas o modelo atual é projetado para permitir a evolução com impacto limitado.
-
-
-

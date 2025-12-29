@@ -18,6 +18,7 @@ Este documento apresenta os requisitos para o desenvolvimento de uma aplicação
 # 1. Visão geral
 O sistema será um PWA de calculadora de pacotes de bens digitais de jogos (diamantes, moedas, rubis e etc), focado em usuários mobile. Essa aplicação permite calcular rapidamente quantos pacotes comprar para atingir uma quantidade desejada desses bens, cálculo o qual considera diferentes ofertas e métodos de pagamento. O aplicativo será stateless do lado do servidor, com armazenamento apenas local para histórico e configurações de pacotes.
 
+
 # 2. Atores e contexto
 
 Esse projeto, inicialmente, conta com apenas dois atores, sendo eles o administrador e o usuário. 
@@ -34,6 +35,7 @@ Ao acessar a plataforma (ou PWA - versão instalada localmente no celular), ele 
 ## Ações do Administrador
 
 O administrador, além de todos as responsabilidades citadas, terá acesso a insights e dashboards, futuramente. Além dessas visualizações, ele também poderá gerir o uso das APIs externas usadas para atualizar ou consultar os pacotes e lojas disponíveis (futuramente). Essas APIs serão responsaveis por fornecer a lista atualizada de pacotes, preços, descontos e quantidades de bens digitais.
+
 
 # 3. Requisitos de Regras de Negócio
 
@@ -58,7 +60,7 @@ Os Requisitos Funcionais descrevem comportamentos que o sistema deve entregar. C
 | RF06 | O sistema deve restaurar e exibir o histórico de cálculos realizados e armazenados previamente, a fim de que o usuário possa visualizar ou limpar os cálculos recentes. | Alta | 
 | RF07 | O sistema deve permitir que o administrador possa gerenciar a lista de pacotes disponíveis, em que cada um contém: (1) preço, (2) quantidade de tokens e (3) o tipo de moeda (exemplo: BRL). | Alta |
 | RF08 | O sistema deve permitir que o usuário selecione o idioma da aplicação e, após selecionado, exiba a interface de acordo com o idioma escolhido. | Baixa |
-| RF09 | O sistema deve sincronizar sua base de dados local (dos pacotes) toda vez que for aberto, caso tenha acesso à internet. | Baixo |
+| RF09 | O sistema deve sincronizar sua base de dados local (dos pacotes) toda vez que for aberto, caso tenha acesso à internet. | Baixa |
 
 
 # 5. Requisitos não funcionais
